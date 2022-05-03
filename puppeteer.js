@@ -1,15 +1,14 @@
-const puppeteer = require('puppeteer-extra')
+const puppeteer = require('puppeteer-extra');
 require('dotenv').config();
 
 const puppeteerRequest = async (request) => {
-    // return promise of the launch puppeteer function
     return new Promise((resolve, reject) => {
         puppeteer.use(require('puppeteer-extra-plugin-stealth')())
         ;(async () => {
         const browser = await puppeteer.launch({
             args: [
-            '--no-sandbox',
-            `--proxy-server=http://${request.proxies}`,
+                '--no-sandbox',
+                `--proxy-server=http://${request.proxies}`,
             ],
             headless: true,
         })
@@ -27,18 +26,15 @@ const puppeteerRequest = async (request) => {
         const url = request.url
         await page.goto(url, { waitUntil: 'networkidle2' })
 
-        let bodyHTML = await page.evaluate(() => document.body.innerHTML);
+        // let bodyHTML = await page.evaluate(() => document.body.innerHTML);
+        const content = await page.content();
         
-        response = bodyHTML;
+        response = content
 
         await browser.close()
         resolve(response);
         })()
     })
-}
-
-const launchPuppeteer = async (request) => {
-    
 }
 
 module.exports = { puppeteerRequest }

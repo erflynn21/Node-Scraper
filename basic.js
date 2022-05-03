@@ -18,7 +18,7 @@ const basicRequest = async (userRequest) => {
                 reject(error);
                 return error;
             } else {
-                resolve(body);
+                resolve( body);
                 return body;
             }
         });
