@@ -3,9 +3,9 @@ const { basicRequest } = require("./basic");
 const { puppeteerRequest } = require("./puppeteer");
 
 const request = {
-  proxyType: 'premium', 
-  url: "http://google.com",
-  rendering: true,
+  proxyType: 'datacenter', 
+  url: "http://ipinfo.io",
+  rendering: false,
   geo: 'US',
   proxies: null,
   parse: false,
@@ -20,6 +20,8 @@ setProxies(request.proxyType).then((proxies) => {
 
   if (!request.rendering) {
     // run a basic request
-    basicRequest(request);
+    basicRequest(request).then((response) => {
+      console.log(response);
+    });
   }
 });
