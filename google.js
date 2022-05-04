@@ -11,9 +11,10 @@ const googleRequest = async (request) => {
                 '--no-sandbox',
                 `--proxy-server=http://${request.proxies}`,
             ],
-            headless: false,
+            headless: true,
         })
         const page = await browser.newPage();
+        page.setDefaultNavigationTimeout(0); 
 
         let username = process.env.USERNAME;
         if (request.geo !== 'none') {
@@ -70,7 +71,7 @@ const googleRequest = async (request) => {
             }
         }
 
-        console.log(paidResults);
+        // console.log(paidResults);
 
         let organicURLs = [];
         let organicTitles = [];
@@ -80,8 +81,6 @@ const googleRequest = async (request) => {
         $('.NJo7tc > .yuRUbf > a > h3').each((i, el) => {
             organicTitles[i] = $(el).text();
         });
-
-        // console.log(organicTitles);
 
         $('.VwiC3b span').each((i, el) => {
             organicDescriptions[i] = $(el).text();
@@ -107,11 +106,67 @@ const googleRequest = async (request) => {
             }
         }
 
-        // console.log('organic');
-        console.log(organicResults);
+        let questions = [];
+        let answers = [];
+        let answersURLs = [];
+        let answersTitles = [];
+        let searchURLs = [];
 
-        // await browser.close()
-        resolve(content);
+        $('.iDjcJe > span').each((i, el) => {
+            questions[i] = $(el).text();
+        });
+
+        $('.hgKElc').each((i, el) => {
+            answers[i] = $(el).text();
+        });
+
+        $('.tF2Cxc > .yuRUbf > a').each((i, el) => {
+            answersURLs[i] = $(el).attr('href');
+        });
+
+        $('.tF2Cxc > .yuRUbf > a > h3').each((i, el) => {
+            answersTitles[i] = $(el).text();
+        });
+
+        $('.hwqd7e > a').each((i, el) => {
+            searchURLs[i] = $(el).attr('href');
+        });
+
+        const questionsResults = [];
+        for (let i = 0; i < questions.length; i++) {
+            questionsResults[i] = {
+                question: questions[i],
+                answer: answers[i],
+                answerURL: answersURLs[i],
+                answerTitle: answersTitles[i],
+                searchURL: searchURLs[i],
+                position: i + 1,
+            }
+        }
+
+        const relatedSearches = [];
+        $('.iKt1P, .s75CSd').each((i, el) => {
+            relatedSearches[i] = $(el).text();
+        });
+
+        const pageNumber = $('.YyVfkd').text();
+
+        const result = {
+            status: 200,
+            searchInfo: {
+                queryURL: url,
+                pageNumber: pageNumber,
+                totalResults: allTitles.length,
+            },
+            paid_results: paidResults,
+            organic_results: organicResults,
+            related_questions: questionsResults,
+            related_searches: relatedSearches,
+        }
+
+        await browser.close()
+
+        resolve(result);
         })()
     })
 }

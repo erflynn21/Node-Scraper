@@ -17,7 +17,7 @@ setProxies(request.proxyType).then((proxies) => {
   request.proxies = proxies;
   if (request.google) {
     googleRequest(request).then((response) => {
-      // console.log(response);
+      console.log(response);
     });
   }
 
