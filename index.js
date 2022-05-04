@@ -4,13 +4,13 @@ const { puppeteerRequest } = require("./puppeteer");
 const { googleRequest } = require("./google");
 
 const request = {
-  proxyType: 'premium', 
-  url: "https://google.com/search?q=residential+proxies",
-  render: true,
-  geo: 'US',
+  proxyType: 'datacenter', 
+  url: "https://ipinfo.io",
+  render: false,
+  geo: 'none',
   proxies: null,
   parse: false,
-  google: true,
+  google: false,
 }
 
 setProxies(request.proxyType).then((proxies) => {
@@ -24,7 +24,7 @@ setProxies(request.proxyType).then((proxies) => {
   if (request.render) {
     // run a puppeteer request
     puppeteerRequest(request).then((response) => {
-      // console.log(response);
+      console.log(response);
     });
   }
 

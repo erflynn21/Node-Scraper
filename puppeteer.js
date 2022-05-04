@@ -13,10 +13,11 @@ const puppeteerRequest = async (request) => {
             headless: true,
         })
         const page = await browser.newPage();
+        page.setDefaultNavigationTimeout(0); 
 
         let username = process.env.USERNAME;
         if (request.geo !== 'none') {
-            username = `${process.env.USERNAME}-country-${request.geo}`;
+            username = `${process.env.USERNAME}-country-${request.geo}-timeoutSeconds=60`;
         }
         await page.authenticate({
             username,
@@ -29,10 +30,14 @@ const puppeteerRequest = async (request) => {
         // let bodyHTML = await page.evaluate(() => document.body.innerHTML);
         const content = await page.content();
         
-        response = content
+        const result = {
+            status: 200,
+            queryURL: url,
+            body: content,
+        }
 
         await browser.close()
-        resolve(response);
+        resolve(result);
         })()
     })
 }

@@ -8,7 +8,7 @@ const setProxies = async (proxyType) => {
         proxies = 'private.residential.proxyrack.net:10000';
     }
 
-    if (proxyType === 'premium') {
+    if (proxyType === 'premium' || google === true) {
         proxies = 'premium.residential.proxyrack.net:9000';
     }
 

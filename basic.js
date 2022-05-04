@@ -15,11 +15,21 @@ const basicRequest = async (userRequest) => {
     return new Promise((resolve, reject) => {
         proxiedRequest.get(userRequest.url, function (error, response, body){
             if (error) {
-                reject(error);
-                return error;
+                const result = {
+                    status: 500,
+                    queryURL: userRequest.url,
+                    body: error,
+                }
+                reject(result);
+                return result;
             } else {
-                resolve( body);
-                return body;
+                const result = {
+                    status: 200,
+                    queryURL: userRequest.url,
+                    body: body,
+                }
+                resolve( result );
+                return result;
             }
         });
     });
