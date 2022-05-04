@@ -13,7 +13,7 @@ const request = {
   google: false,
 }
 
-setProxies(request.proxyType).then((proxies) => {
+setProxies(request).then((proxies) => {
   request.proxies = proxies;
   if (request.google) {
     googleRequest(request).then((response) => {
