@@ -16,8 +16,8 @@ const puppeteerRequest = async (request) => {
         page.setDefaultNavigationTimeout(0); 
 
         let username = process.env.USERNAME;
-        if (request.geo !== 'none') {
-            username = `${process.env.USERNAME}-country-${request.geo}-timeoutSeconds=60`;
+        if (request.country !== 'none') {
+            username = `${process.env.USERNAME}-country-${request.country}-timeoutSeconds=60`;
         }
         await page.authenticate({
             username,

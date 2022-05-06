@@ -5,8 +5,8 @@ const basicRequest = async (userRequest) => {
     let username = process.env.USERNAME;
     let password = process.env.PASSWORD;
 
-    if (userRequest.geo !== 'none') {
-        username = `${process.env.USERNAME}-country-${userRequest.geo}`;
+    if (userRequest.country !== 'none') {
+        username = `${process.env.USERNAME}-country-${userRequest.country}`;
     }
 
     const proxyURL = 'http://' + username + ':' + password + '@' + userRequest.proxies;
